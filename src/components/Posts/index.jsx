@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 import Cookies from 'js-cookie'
 
-const Posts = () => {
-    const [user, setState] = useState('');
-
+const Posts = (userId) => {
+    const [posts, setState] = useState('');
     React.useEffect(
         () => {
-            const url = "http://localhost:1337/users/me"
+            const url = `http://localhost:1337/posts?user.id=${userId.userId}&_sort=id:asc`
             const token = Cookies.get('token');
 
             const contentHeader = {
@@ -19,20 +18,26 @@ const Posts = () => {
 
             fetch(url, contentHeader)
                 .then((response) => response.json())
-                .then((response) => setState(response))
-        },
-        [],
-    );
+                .then((response) => (setState(response)))
 
+        },
+        [userId],
+    );
 
     return (
         <>
-            <h1>Profile</h1>
-            <p>{console.log(user)}</p>
-            <p>{posts.username}</p>
-            <p>{posts.email}</p>
-            <p>{posts.created_at}</p>
-            <p>{user.id}</p>
+            <h1>Tweets</h1>
+            <p>{posts && console.log(posts, 'les posts')}</p>
+            <div>{posts && posts.map((p) =>
+                <div key={p.id}><p>{p.text}</p>
+                    <br />
+                    <i>{p.updated_at.toString()}</i>
+                    <p>{p.like} <small>Likes</small></p>
+
+                </div>
+
+            )}</div>
+
         </>
     )
 }

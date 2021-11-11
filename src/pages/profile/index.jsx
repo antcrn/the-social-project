@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Cookies from 'js-cookie'
-
+import Posts from '../../components/Posts'
 const Profile = () => {
     const [user, setState] = useState('');
 
@@ -33,6 +33,9 @@ const Profile = () => {
             <p>{user.email}</p>
             <p>{user.created_at}</p>
             <p>{user.id}</p>
+            <div>
+                <Posts userId={user.id} />
+            </div>
         </>
     )
 }
